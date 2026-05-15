@@ -1,0 +1,155 @@
+# ============================================================
+# Agentic RAG — Phidata + LanceDB + DuckDuckGo
+# Requirements File
+# ============================================================
+# Install all dependencies with:
+#   pip install -r requirements.txt
+#
+# For Google Colab, run in a notebook cell:
+#   !pip install phidata openai duckduckgo-search lancedb tantivy pypdf
+#   !pip install pylance
+#
+# Python version required: >= 3.10
+# Verify with: python --version
+# ============================================================
+
+# --------------------------
+# Core: Phidata Agent Framework
+# --------------------------
+phidata>=2.7.0              # Agent framework — orchestrates LLM + tools + knowledge + storage
+                            # Docs: https://docs.phidata.com/
+
+# --------------------------
+# LLM Provider: OpenAI
+# --------------------------
+openai>=1.30.0              # OpenAI Python SDK (GPT-4o-mini, GPT-4o, embeddings)
+
+# --------------------------
+# Vector Database: LanceDB
+# --------------------------
+lancedb>=0.6.0              # Embedded vector database — no server required
+                            # Stores and retrieves PDF chunks
+pylance>=0.6.0              # Python interface for LanceDB
+
+# --------------------------
+# Full-Text Search Engine
+# --------------------------
+tantivy>=0.21.0             # Rust-based BM25 full-text search engine
+                            # Required for SearchType.keyword in LanceDB
+
+# --------------------------
+# PDF Processing
+# --------------------------
+pypdf>=4.0.0                # PDF parsing and text extraction
+                            # Used by Phidata's PDFReader internally
+
+# --------------------------
+# Web Search Tool
+# --------------------------
+duckduckgo-search>=5.0.0    # DuckDuckGo search API (no key required)
+                            # Used by phi.tools.duckduckgo.DuckDuckGo
+
+# --------------------------
+# Local Environment Support
+# --------------------------
+python-dotenv>=1.0.0        # Load API keys from .env file (local development)
+                            # Not needed in Google Colab — use Secrets panel instead
+
+# ============================================================
+# Optional: Better Search — Semantic / Hybrid
+# ============================================================
+# Uncomment to enable vector or hybrid search in LanceDB.
+# Requires an OpenAI API key for generating embeddings.
+
+# These are already installed via phidata dependencies,
+# but listed here explicitly for clarity:
+# langchain-openai>=0.1.0   # For OpenAIEmbedder if using phi's embedding wrappers
+
+# ============================================================
+# Optional: Alternative Web Search Tools
+# ============================================================
+# More reliable alternatives to DuckDuckGo.
+
+# tavily-python>=0.3.0      # Tavily AI search — cleaner results, more reliable
+                            # Free tier: 1,000 searches/month at https://tavily.com
+                            # Usage: from phi.tools.tavily import TavilyTools
+
+# google-search-results>=2.4.2  # SerperDev search API
+                                # Free tier: 2,500 searches/month at https://serper.dev
+
+# ============================================================
+# Optional: Alternative / Additional LLM Providers
+# ============================================================
+# Uncomment to use an LLM provider other than OpenAI.
+
+# anthropic>=0.25.0         # Anthropic Claude (claude-3-haiku, claude-3-sonnet)
+                            # Usage: from phi.model.anthropic import Claude
+
+# groq>=0.5.0               # Groq API — very fast inference (llama3, mixtral)
+                            # Usage: from phi.model.groq import Groq
+                            # Free tier available at https://console.groq.com
+
+# ============================================================
+# Optional: Production Agent Storage Backends
+# ============================================================
+# Replace SQLite (single-file, dev-only) with a production database.
+
+# psycopg2-binary>=2.9.0    # PostgreSQL driver
+                            # Required for phi.storage.agent.postgres.PgAgentStorage
+
+# sqlalchemy>=2.0.0         # SQL toolkit used internally by Phidata storage backends
+
+# ============================================================
+# Optional: RAG Evaluation
+# ============================================================
+# Add evaluation metrics to measure retrieval and answer quality.
+
+# ragas>=0.1.0              # RAG evaluation framework
+                            # Metrics: faithfulness, answer_relevancy, context_recall
+                            # Docs: https://docs.ragas.io/
+
+# ============================================================
+# Optional: Additional Document Readers (Phidata built-in)
+# ============================================================
+# Phidata supports many document types beyond PDF.
+# These readers are included in phidata — no extra install needed.
+#
+# from phi.knowledge.docx import DocxKnowledgeBase
+# from phi.knowledge.csv  import CsvKnowledgeBase
+# from phi.knowledge.json import JsonKnowledgeBase
+# from phi.knowledge.website import WebsiteKnowledgeBase
+# from phi.knowledge.arxiv import ArxivKnowledgeBase   # requires: arxiv
+# from phi.knowledge.wikipedia import WikipediaKnowledgeBase
+#
+# arxiv>=2.0.0              # Required for ArxivKnowledgeBase
+# wikipedia>=1.4.0          # Required for WikipediaKnowledgeBase
+
+# ============================================================
+# Optional: Chat UI Frameworks
+# ============================================================
+# Build an interactive front-end for the RAG agent.
+
+# gradio>=4.0.0             # Quick chat UI — simplest to set up
+# streamlit>=1.30.0         # Full web app framework — more customizable
+
+# ============================================================
+# Notes
+# ============================================================
+# 1. tantivy is required ONLY when using SearchType.keyword in LanceDB.
+#    If you switch to SearchType.vector or SearchType.hybrid, tantivy
+#    is not strictly required (but doesn't hurt to keep it installed).
+#
+# 2. pylance and lancedb MUST be installed together — pylance is the
+#    Python interface that phidata uses to communicate with LanceDB.
+#
+# 3. The SQLite storage backend (SqlAgentStorage) uses Python's built-in
+#    sqlite3 module — no extra install required.
+#
+# 4. On Google Colab, /tmp/lancedb is DELETED when the session ends.
+#    Mount Google Drive and point LanceDB uri to Drive for persistence.
+#    Example: uri="/content/drive/MyDrive/lancedb"
+#
+# 5. duckduckgo-search v5+ changed its API. If you see errors, ensure
+#    you have version 5.0.0 or higher:
+#    pip install duckduckgo-search --upgrade
+# ============================================================
