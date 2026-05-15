@@ -940,14 +940,6 @@ git checkout -b feature/add-gradio-ui
 git commit -m "Add Gradio chat interface for document QA"
 git push origin feature/add-gradio-ui
 # Then open a Pull Request on GitHub
-```
-
----
-
-## 📜 License
-
-This project is open-source and available under the [MIT License](LICENSE).
-
 ---
 
 ## 🙏 Acknowledgements
